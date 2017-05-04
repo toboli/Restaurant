@@ -46,7 +46,7 @@ public class foodfukidashicontroller : MonoBehaviour {
             //ターゲットが客席の場合、スコアを加算する
             if (target.tag=="table")
             {
-                //スコア加算の処理
+                //スコア加算の処理//ほかのスクリプト上のscorにたしていくe
                 this.score += 10;
 
                 //UIに命令を送る
