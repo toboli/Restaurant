@@ -3,15 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class foodfukidashicontroller : MonoBehaviour {
+public class foodfukidashicontroller : MonoBehaviour
+{
 
     private GameObject scoreText;
     private int score=0;
+    public GameObject target;
 
     // Use this for initialization
     void Start() {
         //シーン中のscoreTextオブジェクトを取得
         this.scoreText = GameObject.Find("Score");
+        GameObject chef = GameObject.Find("chef");
+        GameObject table = GameObject.Find("table");
+
+        if (this.tag == "fukidashi")
+        {
+            target = chef;
+        }
+        else if(this.tag == "food")
+        {
+            target = table;
+        }
 
     }
 
@@ -23,14 +36,22 @@ public class foodfukidashicontroller : MonoBehaviour {
         transform.position = Camera.main.ScreenToWorldPoint(screenPoint);
     }
 
-
+     
 
     //インスペクターでドラッグ先のオブジェクトを設定する
-    public GameObject target;
+    
+
     public void OnDragUp()
+
     {
+        Debug.Log("Dragged");//動いてるかわかんなかったら、こういうの入れて確かめること
+
+        
+
         //インスペクターで設定したターゲットとの距離を求める
-        float distance = this.target.transform.position.z- this.transform.position.z;
+        Vector3 TargetPos = this.target.transform.position;
+        Vector3 thisPos = this.transform.position;
+        float distance = Vector3.Distance(TargetPos, thisPos);
 
         //ターゲットとの距離が⼀定値未満であれば（近ければ）実⾏する
         if (distance < 0.5f)
@@ -39,7 +60,7 @@ public class foodfukidashicontroller : MonoBehaviour {
             if (target.tag=="chef")
             {
                 //注⽂の処理
-                Destroy(this);
+                Destroy(this.gameObject);
                 //⽣成スクリプトに命令を送る(?)
 
             }
@@ -63,5 +84,7 @@ public class foodfukidashicontroller : MonoBehaviour {
     void Update () {
 
         }
-    }
+
+
+}
 
