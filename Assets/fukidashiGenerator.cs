@@ -7,97 +7,89 @@ using UnityEngine;
 //③Updateで次の生成タイミングまで時間を計測する
 //④次の生成タイミングになったら①に戻る
 
-public class fukidashiGenerator : MonoBehaviour {
+public class fukidashiGenerator : MonoBehaviour
+{
 
     //吹き出しのprefab
-    public GameObject fukidashi1_p;
-    public GameObject fukidashi2_p;
-    public GameObject fukidashi3_p;
-    public GameObject fukidashi4_p;
-    public GameObject fukidashi5_p;
-    public GameObject fukidashi6_p;
-    public GameObject fukidashi7_p;
-    public GameObject fukidashi8_p;
-    public GameObject fukidashi9_p;
-    public GameObject fukidashi10_p;
-    public GameObject fukidashi11_p;
-    public GameObject fukidashi12_p;
+    public GameObject[] fukidashiPrefabs;
 
+    //ごはんのprefab
+    public GameObject[] foodPrefabs;
 
+    //ゲーム終了の判定
+    private bool isEnd = false;
 
 
     // Use this for initialization
-    void Start() {
-
+    void Start()
+    {
+       
     }
 
-    //生成されたアイテムの座標を保持する変数
-    float position = 0;
-    //時間を入れておく箱
-    float time = 5;
 
 
+    //次に生成する時間 : 初期値1
+    float nextGenerateTime = 3;
 
     // Update is called once per frame
-    void Update() {
-
-        time += Time.deltaTime;
-
-        if (time >= Random.value)
+    void Update()
+    {
+        if (GameObject.Find("Canvas").GetComponent<UIController>().time > 0)
         {
 
-            if (Random.Range(0, 11) == 0)
-            {
-                Instantiate(fukidashi1_p, new Vector3(-5f, 0f, position + 250f), fukidashi1_p.transform.rotation);
+            //次に生成する時間をカウントダウンする
+            nextGenerateTime -= Time.deltaTime;
 
-            } else if (Random.Range(0, 11) == 1)
+            //次に生成する時間か判定する
+            if (nextGenerateTime <= 0.5)
             {
-                Instantiate(fukidashi2_p, new Vector3(-5f, 0f, position + 250f), fukidashi2_p.transform.rotation);
+                //0~配列の個数からランダムな数字を生成する
+                int randomIndex = Random.Range(0, fukidashiPrefabs.Length);
 
+
+
+
+                float x = Random.Range(5.5f, 7.0f);
+                float y = Random.Range(-4.0f, 0.1f);
+
+
+
+                //ランダムなインデックスに入っているプレファブを生成する
+                Instantiate(fukidashiPrefabs[randomIndex], new Vector2(x, y), Quaternion.identity);
+
+                //次に生成する時間をランダムに決める
+                nextGenerateTime = Random.Range(1, 7);
             }
-            else if (Random.Range(0, 11) == 2)
-            {
-                Instantiate(fukidashi3_p, new Vector3(-5f, 0f, position + 250f), fukidashi3_p.transform.rotation);
-
-            }
-            else if (Random.Range(0, 11) == 3)
-            {
-                Instantiate(fukidashi4_p, new Vector3(-5f, 0f, position + 250f), fukidashi4_p.transform.rotation);
-
-            }
         }
-
-        else if (time <= Random.value) { 
-
-
-
-            if (Random.Range(0, 11) == 4)
-        {
-            Instantiate(fukidashi5_p, new Vector3(-5f, 0f, position + 250f), fukidashi5_p.transform.rotation);
-
-        }
-        else if (Random.Range(0, 11) == 5)
-        {
-            Instantiate(fukidashi6_p, new Vector3(-5f, 0f, position + 250f), fukidashi6_p.transform.rotation);
-
-        }
-        else if (Random.Range(0, 11) == 6)
-        {
-            Instantiate(fukidashi7_p, new Vector3(-5f, 0f, position + 250f), fukidashi7_p.transform.rotation);
-
-        }
-        else if (Random.Range(0, 11) == 7)
-        {
-            Instantiate(fukidashi8_p, new Vector3(-5f, 0f, position + 250f), fukidashi8_p.transform.rotation);
-
-        }
+        
+        
     }
 
-            position += Random.value;
-        }
+    public void FoodGenerate()
+    {
+        float x = Random.Range(-4.0f,4.0f);
+        float y = Random.Range(1.6f,1.9f);
 
-        }
+        //int randomIndex = Random.Range(0, foodPrefabs.Length);
+        int randomIndex = Random.Range(0, fukidashiPrefabs.Length);
+        Instantiate(foodPrefabs[randomIndex], new Vector2(x, y), Quaternion.identity);
+    }
 
-    
-        
+    public void Stop()
+    {
+        this.isEnd = true;
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
 
